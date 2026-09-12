@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1160" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <style>
+    .band1 { fill: #fff; stroke: #7c3aed; stroke-width: 3; }
+    .band2 { fill: #fff; stroke: #ea580c; stroke-width: 3; }
+    .bx  { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; }
+    .bxp { fill: #fff; stroke: #7c3aed; stroke-width: 2.5; }
+    .bxo { fill: #fff; stroke: #ea580c; stroke-width: 2.5; }
+    .warn { fill: #fef2f2; stroke: #dc2626; stroke-width: 1.5; stroke-dasharray: 7 6; }
+    .tip  { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 1.5; }
+    .win  { fill: #fff7ed; stroke: #ea580c; stroke-width: 1.5; }
+    .title { font-size: 36px; font-weight: 800; fill: #0f172a; }
+    .bandt { font-size: 26px; font-weight: 800; }
+    .t  { font-size: 19px; font-weight: 600; fill: #0f172a; }
+    .s  { font-size: 15px; fill: #475569; }
+    .m  { text-anchor: middle; }
+    .arr  { stroke: #64748b; stroke-width: 2.5; fill: none; marker-end: url(#arw); }
+    .ntb { font-size: 15px; font-weight: 700; fill: #fff; text-anchor: middle; }
+  </style>
+
+  <rect x="0" y="0" width="1920" height="1160" fill="#ffffff"/>
+  <text class="title m" x="960" y="52">The Big Picture — MCP: three verbs and a handshake · the protocol is in the repo</text>
+
+  <rect class="band1" x="40" y="80" width="1840" height="470" rx="20"/>
+  <text class="bandt" x="70" y="122" fill="#7c3aed">📖 PART 1 — THE PROTOCOL (lessons 1–5)</text>
+
+  <rect class="bxp" x="70" y="170" width="330" height="130" rx="14"/>
+  <text class="t m" x="235" y="203">🍝 the problem: N×M</text>
+  <text class="s m" x="235" y="231">every app × every tool =</text>
+  <text class="s m" x="235" y="255">a hand-built adapter — MCP</text>
+  <text class="s m" x="235" y="279">standardizes the socket: N+M 🔌</text>
+  <g transform="translate(70,170)"><circle r="13" fill="#7c3aed"/><text class="ntb" dy="5">1</text></g>
+
+  <rect class="bxp" x="460" y="170" width="400" height="130" rx="14"/>
+  <text class="t m" x="660" y="203">🏫 room · 🔌 socket · 🔬 instrument</text>
+  <text class="s m" x="660" y="231">host (owns permissions) · client (the plumbing) ·</text>
+  <text class="s m" x="660" y="255">server (wraps ONE capability) — the model</text>
+  <text class="s m" x="660" y="279">only ASKS; the host does; the server answers</text>
+  <g transform="translate(460,170)"><circle r="13" fill="#7c3aed"/><text class="ntb" dy="5">2</text></g>
+
+  <rect class="bxp" x="920" y="170" width="400" height="130" rx="14"/>
+  <text class="t m" x="1120" y="203">🧰 three shelves, three deciders</text>
+  <text class="s m" x="1120" y="231">TOOLS (actions) → the model decides ·</text>
+  <text class="s m" x="1120" y="255">RESOURCES (context) → the app decides ·</text>
+  <text class="s m" x="1120" y="279">PROMPTS (recipes) → the user picks</text>
+  <g transform="translate(920,170)"><circle r="13" fill="#7c3aed"/><text class="ntb" dy="5">3</text></g>
+
+  <rect class="bxp" x="1380" y="170" width="470" height="130" rx="14"/>
+  <text class="t m" x="1615" y="203">🤝 the wire: seven messages</text>
+  <text class="s m" x="1615" y="231">initialize → initialized → tools/list →</text>
+  <text class="s m" x="1615" y="255">tools/call → content lands on the desk ·</text>
+  <text class="s m" x="1615" y="279">JSON-RPC, one message per line — that's ALL of it</text>
+  <g transform="translate(1380,170)"><circle r="13" fill="#7c3aed"/><text class="ntb" dy="5">4</text></g>
+
+  <rect class="tip" x="70" y="400" width="880" height="110" rx="14"/>
+  <text class="t m" x="510" y="438">🔌 transports</text>
+  <text class="s m" x="510" y="466">stdio: host launches the server as a child process — local, private, simple ·</text>
+  <text class="s m" x="510" y="490">HTTP: the extension cord for remote/shared servers, with real auth (OAuth)</text>
+  <rect class="warn" x="990" y="400" width="860" height="110" rx="14"/>
+  <text class="t m" x="1420" y="438">🚧 the three trust rules (lesson 05)</text>
+  <text class="s m" x="1420" y="466">1 a server = installed software with YOUR permissions · 2 tool results may carry</text>
+  <text class="s m" x="1420" y="490">prompt injection — treat as data · 3 WRITES get a human gate; reads may flow</text>
+  <g transform="translate(990,400)"><circle r="13" fill="#7c3aed"/><text class="ntb" dy="5">5</text></g>
+
+  <text class="t m" x="960" y="588" fill="#475569">~200 lines of pure Python in this repo speak everything above — run it, read it, own it 🔌</text>
+
+  <rect class="band2" x="40" y="610" width="1840" height="510" rx="20"/>
+  <text class="bandt" x="70" y="652" fill="#ea580c">🔧 PART 2 — BUILD &amp; DEPLOY (lessons 6–8)</text>
+
+  <rect class="bxo" x="70" y="700" width="560" height="200" rx="14"/>
+  <text class="t m" x="350" y="733">🔬 server/school_server.py — four parts</text>
+  <rect class="bx" x="95" y="755" width="245" height="60" rx="10"/>
+  <text class="s m" x="217" y="780">1 the wrapped thing 🗄️</text>
+  <text class="s m" x="217" y="800">(your DB/API — the real work)</text>
+  <rect class="bx" x="360" y="755" width="245" height="60" rx="10"/>
+  <text class="s m" x="482" y="780">2 the shelf: TOOLS 📋</text>
+  <text class="s m" x="482" y="800">descriptions are FOR the model</text>
+  <rect class="bx" x="95" y="825" width="245" height="60" rx="10"/>
+  <text class="s m" x="217" y="850">3 run_tool() dispatcher 🔀</text>
+  <text class="s m" x="217" y="870">plain Python, unit-testable</text>
+  <rect class="bx" x="360" y="825" width="245" height="60" rx="10"/>
+  <text class="s m" x="482" y="850">4 main() plumbing 🔧</text>
+  <text class="s m" x="482" y="870">line in → JSON-RPC → line out</text>
+  <g transform="translate(70,700)"><circle r="13" fill="#ea580c"/><text class="ntb" dy="5">1</text></g>
+
+  <rect class="bxo" x="690" y="700" width="560" height="200" rx="14"/>
+  <text class="t m" x="970" y="733">🔌 client/mini_client.py — the side with power</text>
+  <text class="s m" x="970" y="763">launches the child (stdio) · stamps ids · matches answers ·</text>
+  <text class="s m" x="970" y="787">performs the handshake · relays tool calls — and HERE is where</text>
+  <text class="s m" x="970" y="811">permission prompts belong: the model asks, the HOST does 🚧</text>
+  <text class="s m" x="970" y="845">--drive mode: YOU play the model, typing the calls —</text>
+  <text class="s m" x="970" y="869">swap input() for a model API call = a real agent host</text>
+  <g transform="translate(690,700)"><circle r="13" fill="#ea580c"/><text class="ntb" dy="5">2</text></g>
+
+  <rect class="bxo" x="1310" y="700" width="540" height="200" rx="14"/>
+  <text class="t m" x="1580" y="733">🌍 five use cases (lesson 08 + site page)</text>
+  <text class="s m" x="1580" y="763">🐙 coding assistant — PR gated by a click ·</text>
+  <text class="s m" x="1580" y="787">🎧 support desk — read-only DB + receipts ·</text>
+  <text class="s m" x="1580" y="811">📊 data analyst — SELECT-only schemas ·</text>
+  <text class="s m" x="1580" y="835">📅 meeting prep — 3 servers, one desk ·</text>
+  <text class="s m" x="1580" y="859">📁 report robot — reads flow, the write gates</text>
+  <g transform="translate(1310,700)"><circle r="13" fill="#ea580c"/><text class="ntb" dy="5">3</text></g>
+
+  <rect class="win" x="70" y="960" width="1780" height="120" rx="14"/>
+  <text class="t m" x="960" y="1000">🎼 every use case is the same seven messages — drawn as flow AND sequence diagrams on the use-cases page</text>
+  <text class="s m" x="960" y="1030">read one wire, read them all: handshake 🤝 → discovery 📋 → calls 🧰 → content on the desk 📄 ·</text>
+  <text class="s m" x="960" y="1054">production servers: the official SDKs at modelcontextprotocol.io automate exactly the four parts above 🧹</text>
+</svg>
