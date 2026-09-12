@@ -237,7 +237,9 @@ python3 client/mini_client.py --drive  # YOU pick the tool calls</code></pre>
     <a href="https://github.com/BaluRaut/learn-mcp-school">github.com/BaluRaut/learn-mcp-school</a> ·
     spec &amp; SDKs: <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a> ·
     sibling: <a href="https://baluraut.github.io/learn-agents-school/">the Agents school</a> 📋
-  </footer>
+   ·
+  <a href="https://baluraut.github.io/school/">🏫 all schools</a>
+</footer>
 </div>
 </body>
 </html>
@@ -261,6 +263,8 @@ DIAGRAMS = head("Lesson diagrams — Learn MCP School",
 <footer>
   Learn MCP School · <a href="index.html">Course home</a> · <a href="use-cases.html">Use cases</a> ·
   <a href="https://github.com/BaluRaut/learn-mcp-school">GitHub</a>
+ ·
+  <a href="https://baluraut.github.io/school/">🏫 all schools</a>
 </footer>
 </div>
 </body>
@@ -384,6 +388,8 @@ USECASES = head("5 real-world use cases — Learn MCP School",
   Learn MCP School · <a href="index.html">Course home</a> ·
   <a href="lesson-diagrams.html">Lesson diagrams</a> ·
   <a href="https://github.com/BaluRaut/learn-mcp-school">GitHub</a>
+ ·
+  <a href="https://baluraut.github.io/school/">🏫 all schools</a>
 </footer>
 </div>
 </body>
