@@ -234,7 +234,8 @@ python3 client/mini_client.py --drive  # YOU pick the tool calls</code></pre>
   <footer>
     Learn MCP School · the protocol is in the repo ·
     <a href="https://github.com/BaluRaut/learn-mcp-school">github.com/BaluRaut/learn-mcp-school</a> ·
-    spec &amp; SDKs: <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a>
+    spec &amp; SDKs: <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a> ·
+    sibling: <a href="https://baluraut.github.io/learn-agents-school/">the Agents school</a> 📋
   </footer>
 </div>
 </body>
