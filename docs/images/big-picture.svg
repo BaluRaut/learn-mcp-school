@@ -106,7 +106,7 @@
   <g transform="translate(1310,700)"><circle r="13" fill="#ea580c"/><text class="ntb" dy="5">3</text></g>
 
   <rect class="win" x="70" y="960" width="1780" height="120" rx="14"/>
-  <text class="t m" x="960" y="1000">🎼 every use case is the same seven messages — drawn as flow AND sequence diagrams on the use-cases page</text>
+  <text class="t m" x="960" y="1000">🎼 every use case is the same six messages — drawn as flow AND sequence diagrams on the use-cases page</text>
   <text class="s m" x="960" y="1030">read one wire, read them all: badge 🪪 → discovery 📋 → calls 🧰 → content on the desk 📄 ·</text>
   <text class="s m" x="960" y="1054">production servers: the official SDKs at modelcontextprotocol.io automate exactly the four parts above 🧹</text>
 </svg>
