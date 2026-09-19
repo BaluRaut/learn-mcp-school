@@ -23,7 +23,7 @@
   </style>
 
   <rect x="0" y="0" width="1920" height="1160" fill="#ffffff"/>
-  <text class="title m" x="960" y="52">The Big Picture — MCP: three verbs and a handshake · the protocol is in the repo</text>
+  <text class="title m" x="960" y="52">The Big Picture — MCP: three verbs and a badge · the protocol is in the repo</text>
 
   <rect class="band1" x="40" y="80" width="1840" height="470" rx="20"/>
   <text class="bandt" x="70" y="122" fill="#7c3aed">📖 PART 1 — THE PROTOCOL (lessons 1–5)</text>
@@ -39,7 +39,7 @@
   <text class="t m" x="660" y="203">🏫 room · 🔌 socket · 🔬 instrument</text>
   <text class="s m" x="660" y="231">host (owns permissions) · client (the plumbing) ·</text>
   <text class="s m" x="660" y="255">server (wraps ONE capability) — the model</text>
-  <text class="s m" x="660" y="279">only ASKS; the host does; the server answers</text>
+  <text class="s m" x="660" y="279">only PROPOSES; the host mediates; the server provides</text>
   <g transform="translate(460,170)"><circle r="13" fill="#7c3aed"/><text class="ntb" dy="5">2</text></g>
 
   <rect class="bxp" x="920" y="170" width="400" height="130" rx="14"/>
@@ -59,14 +59,14 @@
   <rect class="tip" x="70" y="400" width="880" height="110" rx="14"/>
   <text class="t m" x="510" y="438">🔌 transports</text>
   <text class="s m" x="510" y="466">stdio: host launches the server as a child process — local, private, simple ·</text>
-  <text class="s m" x="510" y="490">HTTP: the extension cord for remote/shared servers, with real auth (OAuth)</text>
+  <text class="s m" x="510" y="490">Streamable HTTP: the extension cord for remote servers — own identity, auth (OAuth) per request</text>
   <rect class="warn" x="990" y="400" width="860" height="110" rx="14"/>
-  <text class="t m" x="1420" y="438">🚧 the three trust rules (lesson 05)</text>
-  <text class="s m" x="1420" y="466">1 a server = installed software with YOUR permissions · 2 tool results may carry</text>
-  <text class="s m" x="1420" y="490">prompt injection — treat as data · 3 WRITES get a human gate; reads may flow</text>
+  <text class="t m" x="1420" y="438">🚧 the three recommended policies (lesson 05)</text>
+  <text class="s m" x="1420" y="466">1 local server = software with that process&#39;s permissions (remote = its own identity) ·</text>
+  <text class="s m" x="1420" y="490">2 tool results may carry prompt injection — treat as data · 3 WRITES get a human gate; reads may flow</text>
   <g transform="translate(990,400)"><circle r="13" fill="#7c3aed"/><text class="ntb" dy="5">5</text></g>
 
-  <text class="t m" x="960" y="588" fill="#475569">~200 lines of pure Python in this repo speak everything above — run it, read it, own it 🔌</text>
+  <text class="t m" x="960" y="588" fill="#475569">~230 lines of pure Python in this repo speak everything above — run it, read it, own it 🔌</text>
 
   <rect class="band2" x="40" y="610" width="1840" height="510" rx="20"/>
   <text class="bandt" x="70" y="652" fill="#ea580c">🔧 PART 2 — BUILD &amp; DEPLOY (lessons 6–8)</text>
@@ -91,7 +91,7 @@
   <text class="t m" x="970" y="733">🔌 client/mini_client.py — the side with power</text>
   <text class="s m" x="970" y="763">launches the child (stdio) · stamps ids · matches answers ·</text>
   <text class="s m" x="970" y="787">stamps the badge 🪪 · relays tool calls — and HERE is where</text>
-  <text class="s m" x="970" y="811">permission prompts belong: the model asks, the HOST does 🚧</text>
+  <text class="s m" x="970" y="811">permission prompts belong: the model proposes, the HOST mediates 🚧</text>
   <text class="s m" x="970" y="845">--drive mode: YOU play the model, typing the calls —</text>
   <text class="s m" x="970" y="869">swap input() for a model API call = a real agent host</text>
   <g transform="translate(690,700)"><circle r="13" fill="#ea580c"/><text class="ntb" dy="5">2</text></g>
