@@ -23,7 +23,9 @@ a { color:var(--blue); } h1 { font-size:1.9rem; }
 .why { display:none; margin-top:10px; color:var(--muted); font-size:.92rem; border-top:1px dashed var(--line); padding-top:8px; }
 .reset { margin-top:20px; background:var(--accent); color:#fff; border:none; border-radius:10px; padding:10px 18px; font:inherit; font-weight:700; cursor:pointer; }
 footer { margin-top:44px; border-top:1px solid var(--line); padding-top:16px; color:var(--muted); font-size:.88rem; }
+.parts{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px} .pbtn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:.88rem;cursor:pointer} .pbtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 </style>
+
 <style id="i18n-css">
 #lang-pick{position:fixed;top:10px;right:10px;z-index:9999;font:600 .85rem -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--card,#fff);color:var(--ink,#0f172a);border:1px solid var(--line,#e2e8f0);border-radius:999px;padding:6px 12px;box-shadow:0 2px 10px rgba(0,0,0,.08);cursor:pointer}
 html[lang="mr"] body{font-family:"Noto Sans Devanagari","Mukta","Devanagari Sangam MN","Nirmala UI",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
@@ -33,20 +35,22 @@ html[lang="mr"] svg text{font-family:"Noto Sans Devanagari","Mukta","Devanagari 
 <option value="mr">🇮🇳 मराठी</option><option value="en">🇬🇧 English</option></select><div class="wrap">
 <p data-en='&lt;a href="index.html"&gt;← Back to the course home&lt;/a&gt;'><a href="index.html">← कोर्सच्या मुख्य पानाकडे परत</a></p>
 <h1 data-en="🧪 The 🔌 MCP quiz">🧪 🔌 MCP प्रश्नमंजुषा</h1>
-<p class="sub" data-en="8 questions — pick an answer, get the why. One attempt per question (until reset).
-Your best score is saved in this browser.">8 प्रश्न — उत्तर निवडा, कारण मिळवा. प्रत्येक प्रश्नाला एकच प्रयत्न (reset पर्यंत). तुमचा सर्वोत्तम गुण या ब्राउझरमध्ये जपला जातो.</p>
-<div class="scorebox"><div class="score" data-en="0 / 8 · best: —" id="score">0 / 8 · सर्वोत्तम: —</div></div>
+<p class="sub" data-en="14 questions — pick an answer, get the why. Filter by Part below. One attempt per question (until reset).
+Your best score is saved in this browser.">14 प्रश्न — उत्तर निवडा, कारण मिळवा. खाली भागानुसार गाळा. प्रत्येक प्रश्नाला एकच प्रयत्न (reset पर्यंत). तुमचा सर्वोत्तम गुण या ब्राउझरमध्ये जपला जातो.</p>
+<div class="scorebox"><div class="score" data-en="0 / 14 · best: —" id="score">0 / 14 · सर्वोत्तम: —</div></div>
+<div class="parts" id="parts"><button class="pbtn on" data-en="All 14" onclick="setPart(0)">सर्व 14</button><button class="pbtn" data-en="📖 Part 1 protocol" onclick="setPart(1)">📖 भाग 1 प्रोटोकॉल</button><button class="pbtn" data-en="🔧 Part 2 build" onclick="setPart(2)">🔧 भाग 2 बांधणी</button></div>
 <div id="quiz"></div>
 <button class="reset" data-en="↺ Reset &amp;amp; retake" onclick="reset()">↺ Reset &amp; पुन्हा द्या</button>
 <footer data-en='Part of &lt;a href="https://baluraut.github.io/school/"&gt;🏫 The School&lt;/a&gt; · &lt;a href="index.html"&gt;course home&lt;/a&gt;'><a href="https://baluraut.github.io/school/">🏫 द स्कूल</a> चा भाग · <a href="index.html">कोर्स मुख्य पान</a></footer>
 </div>
 <script>
-var QS = [{"q": "The problem MCP solves?", "o": ["Slow models", "N apps × M tools = N×M custom adapters → standardize the socket: N+M", "Expensive GPUs"], "c": 1, "w": "L01: the janitor's spaghetti drawer, retired."}, {"q": "The three roles?", "o": ["Client, server, database", "Host (the app) · client (the socket) · server (the instrument)", "Model, prompt, tool"], "c": 1, "w": "L02: room, wall socket, instrument."}, {"q": "The three things a server can offer?", "o": ["Files, APIs, models", "Tools, resources, prompts", "Read, write, execute"], "c": 1, "w": "L03: three shelves — and model/app/user each decide one."}, {"q": "Who decides when a TOOL is called?", "o": ["The server", "The model proposes; the HOST decides and executes", "The user always"], "c": 1, "w": "L02/L07: the model only ever asks — the power lives in the host."}, {"q": "The wire protocol is…", "o": ["gRPC", "JSON-RPC 2.0 — requests carry ids, notifications don't", "Raw websockets"], "c": 1, "w": "L04: three verbs and a handshake; answers quote the id back."}, {"q": "First message in every session?", "o": ["tools/list", "initialize — versions and capabilities exchanged", "ping"], "c": 1, "w": "L04: the handshake, then the 'I'm settled' notification."}, {"q": "stdio transport means…", "o": ["A network port", "The host launches the server as a child process — stdin/stdout, one JSON per line", "A shared file"], "c": 1, "w": "L05: the direct plug; HTTP is the extension cord."}, {"q": "Installing a third-party MCP server is like…", "o": ["Adding a bookmark", "Installing software that runs with YOUR permissions", "Nothing, it's sandboxed"], "c": 1, "w": "L05: rule 1 — plus rule 2 (injection via results) and rule 3 (gate the writes)."}];
-var KEY='quiz-mcp-school', answered={}, score=0;
+var QS = [{"q": "The problem MCP solves?", "o": ["Slow models", "N apps × M tools = N×M hand-built adapters — MCP makes it N+M with one standard socket", "Prompt injection"], "c": 1, "w": "L01: the janitor's spaghetti drawer, retired.", "p": 1}, {"q": "The three roles?", "o": ["Model, prompt, output", "Host (the room) · client (the wall socket) · server (the instrument)", "User, admin, root"], "c": 1, "w": "L02: room, wall socket, instrument — the model never touches the socket.", "p": 1}, {"q": "Who decides whether a proposed tool call actually runs?", "o": ["The model", "The host — the model only proposes; the host mediates (permission prompts live there)", "The server"], "c": 1, "w": "L02/L07: the power moment is in the host.", "p": 1}, {"q": "The three things a server can offer?", "o": ["Files, sockets, ports", "Tools, resources, prompts — model, app and user each decide one", "Models, prompts, keys"], "c": 1, "w": "L03: three shelves, three deciders.", "p": 1}, {"q": "Why must a tool's description be written for the model?", "o": ["Docs generators need it", "It is how the model knows when (and how) to reach for the tool — vague descriptions = tools never called, or called wrong", "It is shown to the user"], "c": 1, "w": "L03/L06: descriptions are the model's only view of the shelf.", "p": 1}, {"q": "What must every request carry since revision 2026-07-28?", "o": ["A session id from initialize", "A _meta badge: protocol version, clientInfo, clientCapabilities — there is no handshake any more", "An OAuth token"], "c": 1, "w": "L04: three verbs and a badge; server/discover is optional introductions.", "p": 1}, {"q": "A server answers your first request with error -32022. Meaning?", "o": ["The tool crashed", "Unsupported protocol version — its data lists the revisions it does speak; retry with one of them", "Wrong JSON"], "c": 1, "w": "L04: version negotiation happens per request now.", "p": 1}, {"q": "isError: true inside a result means…", "o": ["The protocol broke", "The TOOL failed — data for the model to react to (retry, rephrase); a protocol error would be a JSON-RPC error instead", "The server is offline"], "c": 1, "w": "L04/L06: two error kinds, on purpose.", "p": 1}, {"q": "stdio vs Streamable HTTP?", "o": ["Same thing", "stdio = child process on your machine (direct plug); Streamable HTTP = a remote service with its own identity (extension cord), auth per request", "HTTP is deprecated"], "c": 1, "w": "L05: the old HTTP+SSE transport is the deprecated one.", "p": 1}, {"q": "Installing a third-party stdio MCP server is like…", "o": ["Adding a bookmark", "Installing software that runs with that process's permissions — policy 1 (a remote server is a separate service instead)", "Nothing, it's sandboxed"], "c": 1, "w": "L05: policy 1 — plus policy 2 (injection via results) and policy 3 (gate the writes).", "p": 1}, {"q": "Why flush=True on every server print?", "o": ["Style", "stdout IS the wire; without it replies sit in a buffer and the host 'hangs' — the classic first bug", "It enables streaming"], "c": 1, "w": "L06: buffered replies never arrive.", "p": 2}, {"q": "An unknown tool name in tools/call should get…", "o": ["isError: true", "A JSON-RPC error (-32602) — a protocol error, not the tool talking", "Silence"], "c": 1, "w": "L06: unknown tool = protocol error; a failing known tool = isError content.", "p": 2}, {"q": "The 'power moment' in the client lesson is…", "o": ["Launching the child process", "The instant between the model's proposal and the tools/call going out — where the gate, allow-list and log belong", "Parsing JSON"], "c": 1, "w": "L07: 'always allow' deletes that step.", "p": 2}, {"q": "The anti-pattern to recognise on sight?", "o": ["A read-only docs server", "A write-capable DB tool (or account) handed to the model with no host-side confirmation", "Two servers in one host"], "c": 1, "w": "L08: policy 2 + a skipped policy 3 = a dropped table.", "p": 2}];
+var KEY='quiz-mcp-school', answered={}, score=0, PART=0, SEL=QS;
+function setPart(p){PART=p;SEL=p?QS.filter(function(q){return q.p===p}):QS;[].slice.call(document.querySelectorAll('.pbtn')).forEach(function(b,i){b.classList.toggle('on',i===p)});reset();}
 var best = parseInt(localStorage.getItem(KEY)||'-1');
 function render() {
   var el = document.getElementById('quiz'); el.innerHTML='';
-  QS.forEach(function(q,i) {
+  SEL.forEach(function(q,i) {
     var card=document.createElement('div'); card.className='qcard';
     card.innerHTML='<h3>'+(i+1)+'. '+q.q+'</h3>';
     q.o.forEach(function(opt,j) {
@@ -68,12 +72,13 @@ function render() {
 }
 function update() {
   var done=Object.keys(answered).length;
-  if (done===QS.length && score>best) { best=score; localStorage.setItem(KEY,best); }
-  document.getElementById('score').textContent=score+' / '+QS.length+(done===QS.length?' — done! 🎓':'')+' · best: '+(best<0?'—':best+'/'+QS.length);
+  if (PART===0 && done===QS.length && score>best) { best=score; localStorage.setItem(KEY,best); }
+  document.getElementById('score').textContent=score+' / '+SEL.length+(done===SEL.length?' — done! 🎓':'')+' · best (all 14): '+(best<0?'—':best+'/'+QS.length);
 }
 function reset() { answered={}; score=0; render(); update(); }
 render(); update();
 </script>
+
 <script id="i18n-js">
 function schoolSetLang(l){
   try{localStorage.setItem('school-lang',l)}catch(e){}

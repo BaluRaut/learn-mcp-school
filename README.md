@@ -9,7 +9,7 @@ The school method — proven on
 **Model Context Protocol**: the standard plug between AI apps and the world.
 
 What makes this course different: **the protocol is IN the repo.** A real MCP
-server and a real MCP host/client, ~200 lines of pure Python total, zero
+server and a real MCP host/client, ~230 lines of pure Python total, zero
 dependencies — you read every byte that moves.
 
 🌐 **Interactive site:** **<https://baluraut.github.io/learn-mcp-school/>** —
@@ -18,12 +18,14 @@ lesson cards, numbered diagrams, the big-picture 4K, and
 
 ## 🚀 The 60-second wow
 
+> 🎒 Companion to the AI course's bonus lesson 13; Python 3 only; teaches the *protocol* (revision 2026-07-28) by showing every byte — not a production-SDK tutorial.
+
 ```bash
 python3 client/mini_client.py          # watch the ENTIRE protocol, message by message
 python3 client/mini_client.py --drive  # YOU play the model: pick the tool calls
 ```
 
-Real handshake 🤝 → real discovery 📋 → real tool calls 🧰 — every JSON-RPC
+Real badge 🪪 (revision 2026-07-28 — no handshake) → real discovery 📋 → real tool calls 🧰 — every JSON-RPC
 message printed as it crosses the wire.
 
 ## 🗺️ The big picture
@@ -39,8 +41,8 @@ Branches are **sequential** — branch 05 contains lessons 01–05.
 | 01 | `lesson-01-why-mcp` | The N×M problem MCP kills | The adapter drawer 🍝 → the standard socket 🔌 |
 | 02 | `lesson-02-architecture` | Hosts, clients, servers | Room, wall socket, instrument 🏫 |
 | 03 | `lesson-03-primitives` | Tools / resources / prompts | Three shelves; model/app/user each pick one 🧰 |
-| 04 | `lesson-04-the-wire` | JSON-RPC lifecycle, message by message | Three verbs and a handshake 🤝 |
-| 05 | `lesson-05-transports-security` | stdio vs HTTP + the three trust rules | Direct plug vs extension cord 🚧 |
+| 04 | `lesson-04-the-wire` | JSON-RPC, message by message — revision 2026-07-28 | Three verbs and a badge 🪪 |
+| 05 | `lesson-05-transports-security` | stdio vs Streamable HTTP + three trust policies | Direct plug vs extension cord 🚧 |
 | 06 | `lesson-06-build-a-server` | Read & extend the real server | An instrument, opened up 🔬 |
 | 07 | `lesson-07-build-a-client` | Read the real host — where power lives | The socket side 🔌 |
 | 08 | `lesson-08-use-cases` | 5 production-shaped setups | Coding, support, data, meetings, reports 🌍 |
@@ -50,10 +52,10 @@ Branches are **sequential** — branch 05 contains lessons 01–05.
 ```
 learn-mcp-school/
 ├── server/school_server.py   # a REAL MCP server: 3 tools, stdio, ~110 lines, stdlib only
-├── client/mini_client.py     # a REAL MCP host/client: handshake→discover→call, --drive mode
+├── client/mini_client.py     # a REAL MCP host/client: discover→list→call, every request badged; --drive mode
 └── docs/                     # the GitHub Pages site (incl. the use-cases page)
 ```
 
-> ⚠️ Teaching implementation: the core handshake + tools verbs, honestly.
+> ⚠️ Teaching implementation: the current (2026-07-28) lifecycle + the tools verbs, honestly — no sessions, no handshake. Legacy (≤2025-11-25) servers are not supported by design; lesson 04 explains the difference.
 > For production servers use the official SDKs at **modelcontextprotocol.io** —
 > they automate exactly the four parts lesson 06 shows you.

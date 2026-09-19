@@ -90,7 +90,7 @@
   <rect class="bxo" x="690" y="700" width="560" height="200" rx="14"/>
   <text class="t m" x="970" y="733">🔌 client/mini_client.py — the side with power</text>
   <text class="s m" x="970" y="763">launches the child (stdio) · stamps ids · matches answers ·</text>
-  <text class="s m" x="970" y="787">performs the handshake · relays tool calls — and HERE is where</text>
+  <text class="s m" x="970" y="787">stamps the badge 🪪 · relays tool calls — and HERE is where</text>
   <text class="s m" x="970" y="811">permission prompts belong: the model asks, the HOST does 🚧</text>
   <text class="s m" x="970" y="845">--drive mode: YOU play the model, typing the calls —</text>
   <text class="s m" x="970" y="869">swap input() for a model API call = a real agent host</text>
@@ -107,6 +107,6 @@
 
   <rect class="win" x="70" y="960" width="1780" height="120" rx="14"/>
   <text class="t m" x="960" y="1000">🎼 every use case is the same seven messages — drawn as flow AND sequence diagrams on the use-cases page</text>
-  <text class="s m" x="960" y="1030">read one wire, read them all: handshake 🤝 → discovery 📋 → calls 🧰 → content on the desk 📄 ·</text>
+  <text class="s m" x="960" y="1030">read one wire, read them all: badge 🪪 → discovery 📋 → calls 🧰 → content on the desk 📄 ·</text>
   <text class="s m" x="960" y="1054">production servers: the official SDKs at modelcontextprotocol.io automate exactly the four parts above 🧹</text>
 </svg>

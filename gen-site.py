@@ -7,14 +7,15 @@ L = [
  (1,"lesson-01-why-mcp","01-why-mcp","🍝 Why MCP","The adapter drawer (N×M) → the standard socket (N+M).",35,P1),
  (2,"lesson-02-architecture","02-architecture","🏫 Architecture","Room (host) · wall socket (client) · instrument (server).",35,P1),
  (3,"lesson-03-primitives","03-primitives","🧰 The three shelves","Tools, resources, prompts — model, app and user each decide one.",35,P1),
- (4,"lesson-04-the-wire","04-the-wire","🤝 The wire","Three verbs and a handshake — the whole protocol, message by message.",40,P1),
- (5,"lesson-05-transports-security","05-transports-security","🚧 Transports &amp; trust","Direct plug vs extension cord — and the three rules of not getting burned.",40,P1),
- (6,"lesson-06-build-a-server","06-build-a-server","🔬 Build a server","110 honest lines: the wrapped thing, the shelf, the dispatcher, the plumbing.",45,P2),
- (7,"lesson-07-build-a-client","07-build-a-client","🔌 Build a client","The side with the power — the model asks, the HOST does.",45,P2),
+ (4,"lesson-04-the-wire","04-the-wire","🪪 The wire","Three verbs and a badge on every message — the whole protocol (revision 2026-07-28), message by message.",40,P1),
+ (5,"lesson-05-transports-security","05-transports-security","🚧 Transports &amp; trust","Direct plug (stdio) vs extension cord (Streamable HTTP) — and three recommended policies for not getting burned.",40,P1),
+ (6,"lesson-06-build-a-server","06-build-a-server","🔬 Build a server","~125 honest lines: the wrapped thing, the shelf, the dispatcher, the plumbing.",45,P2),
+ (7,"lesson-07-build-a-client","07-build-a-client","🔌 Build a client","The side with the power — the model proposes, the HOST mediates.",45,P2),
  (8,"lesson-08-use-cases","08-use-cases","🌍 Real-world use cases","Coding, support, data, meetings, reports — with sequence diagrams.",40,P2),
 ]
 
 BASE_CSS = """
+  .tbl{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-top:12px} .tbl table{border-collapse:collapse;width:100%;font-size:.9rem} .tbl th,.tbl td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top} .tbl th{background:var(--bg)}
   :root { --bg:#f8fafc; --card:#fff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --accent:#7c3aed; --ok:#16a34a; --blue:#2563eb; }
   @media (prefers-color-scheme: dark) { :root { --bg:#0b1220; --card:#131c2e; --ink:#e2e8f0; --muted:#94a3b8; --line:#253349; } }
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -112,30 +113,30 @@ SVG[2]=seq(["🧠 model","🏫 host","🔌 client","🔬 server"],
   ('note',"the host DECIDES — permission checks live here 🚧"),
   (1,2,2,"approved → forward"),(2,3,3,"tools/call over the socket"),
   (3,2,4,"result"),(2,0,5,"→ lands on the model's desk 📄")],
- "the model only ever ASKS · the host does · the server answers")
+ "the model proposes · the host mediates · the server provides tools/resources")
 SVG[3]=(f'<svg viewBox="0 0 940 300" role="img">{B} x="40" y="50" width="270" height="200" rx="14"/>{t(175,82,"🧰 TOOLS")}{sm(175,108,"actions with inputs:")}{sm(175,130,"lookup_grade · add_homework")}{S} x="65" y="150" width="220" height="80" rx="10"/>{sm(175,180,"WHO decides: the MODEL")}{sm(175,202,"(host permitting)")}'
  f'{B} x="340" y="50" width="270" height="200" rx="14"/>{t(475,82,"📁 RESOURCES")}{sm(475,108,"readable context:")}{sm(475,130,"file:// · db://students/3A")}{S} x="365" y="150" width="220" height="80" rx="10"/>{sm(475,180,"WHO decides: the APP")}{sm(475,202,"(what goes on the desk)")}'
  f'{B} x="640" y="50" width="270" height="200" rx="14"/>{t(775,82,"📜 PROMPTS")}{sm(775,108,"suggested recipes:")}{sm(775,130,"/summarize-ticket")}{S} x="665" y="150" width="220" height="80" rx="10"/>{sm(775,180,"WHO decides: the USER")}{sm(775,202,"(menus, slash-commands)")}'
  f'{num(40,50,1)}{num(340,50,2)}{num(640,50,3)}{sm(475,285,"three shelves, three deciders — say it twice and you know more MCP than most 😄")}</svg>')
 SVG[4]=seq(["🔌 client","🔬 server"],
- [(0,1,1,"initialize {protocolVersion, clientInfo}"),
-  (1,0,2,"{protocolVersion, capabilities:{tools}, serverInfo}"),
-  (0,1,3,"notifications/initialized — no id, no reply"),
-  (0,1,4,"tools/list"),
-  (1,0,5,"{tools:[{name, description, inputSchema}…]}"),
-  (0,1,6,'tools/call {name:"lookup_grade", arguments:{student:"sita"}}'),
-  (1,0,7,'{content:[{type:"text", text:"Sita (3A) has grade A+."}]}')],
- "three verbs and a handshake — run python3 client/mini_client.py and watch these exact lines")
+ [(0,1,1,"server/discover {_meta: protocolVersion · clientInfo · clientCapabilities} — optional"),
+  (1,0,2,"{resultType, supportedVersions:[2026-07-28], capabilities:{tools}, _meta:{serverInfo}}"),
+  (0,1,3,"tools/list — wearing the same _meta badge 🪪 (every request does)"),
+  (1,0,4,"{resultType, tools:[{name, description, inputSchema}…], ttlMs}"),
+  (0,1,5,'tools/call {name:"lookup_grade", arguments:{student:"sita"}, _meta}'),
+  (1,0,6,'{resultType, content:[{type:"text", text:"Sita (3A) has grade A+."}], isError:false}'),
+  ('note',"no initialize handshake since revision 2026-07-28 · wrong revision → UnsupportedProtocolVersionError (-32022) listing the ones it speaks")],
+ "three verbs and a badge — run python3 client/mini_client.py and watch these exact lines")
 SVG[5]=(f'<svg viewBox="0 0 940 300" role="img">{B} x="40" y="40" width="420" height="110" rx="14"/>{t(250,70,"🔌 stdio - the direct plug")}{sm(250,96,"host launches server as child process;")}{sm(250,118,"JSON per line on stdin/stdout · local things")}{num(40,40,1)}'
- f'{B} x="490" y="40" width="420" height="110" rx="14"/>{t(700,70,"📡 HTTP - the extension cord")}{sm(700,96,"same messages over HTTP + auth (OAuth);")}{sm(700,118,"remote/shared things · team DB, SaaS")}{num(490,40,2)}'
- f'{D} x="40" y="175" width="270" height="100" rx="12"/>{sm(175,205,"🚧 rule 1: a server =")}{sm(175,227,"installed software with")}{sm(175,249,"YOUR permissions")}'
- f'{D} x="340" y="175" width="270" height="100" rx="12"/>{sm(475,205,"🚧 rule 2: tool results may")}{sm(475,227,"carry prompt injection —")}{sm(475,249,"treat as data, not commands")}'
- f'{D} x="640" y="175" width="270" height="100" rx="12"/>{sm(775,205,"🚧 rule 3: WRITES get a")}{sm(775,227,"human gate — reads may flow,")}{sm(775,249,"add_homework waits for a click")}{num(640,175,3)}</svg>')
+ f'{B} x="490" y="40" width="420" height="110" rx="14"/>{t(700,70,"📡 Streamable HTTP - the extension cord")}{sm(700,96,"same MCP messages over Streamable HTTP;")}{sm(700,118,"remote may add auth (OAuth) · team DB, SaaS")}{num(490,40,2)}'
+ f'{D} x="40" y="175" width="270" height="100" rx="12"/>{sm(175,205,"🚧 policy 1: local server = software")}{sm(175,227,"with that process&#39;s permissions ·")}{sm(175,249,"remote server = its own identity")}'
+ f'{D} x="340" y="175" width="270" height="100" rx="12"/>{sm(475,205,"🚧 policy 2: tool results may")}{sm(475,227,"carry prompt injection —")}{sm(475,249,"treat as data, not commands")}'
+ f'{D} x="640" y="175" width="270" height="100" rx="12"/>{sm(775,205,"🚧 policy 3: WRITES get a")}{sm(775,227,"human gate — reads may flow,")}{sm(775,249,"add_homework waits for a click")}{num(640,175,3)}</svg>')
 SVG[6]=(f'<svg viewBox="0 0 940 300" role="img">{B} x="40" y="40" width="420" height="100" rx="12"/>{t(250,70,"1 🗄️ the wrapped thing")}{sm(250,96,"toy DB here — YOUR Postgres/API in real life;")}{sm(250,118,"MCP is just the plug on the front")}{num(40,40,1)}'
  f'{B} x="490" y="40" width="420" height="100" rx="12"/>{t(700,70,"2 📋 the shelf: TOOLS")}{sm(700,96,"name · description (FOR THE MODEL!) ·")}{sm(700,118,"inputSchema — rich schemas steer behavior")}{num(490,40,2)}'
  f'{B} x="40" y="165" width="420" height="100" rx="12"/>{t(250,195,"3 🔀 run_tool() dispatcher")}{sm(250,221,"plain Python if-ladder — unit-testable,")}{sm(250,243,"no protocol in sight")}{num(40,165,3)}'
- f'{B} x="490" y="165" width="420" height="100" rx="12"/>{t(700,195,"4 🔧 main() plumbing")}{sm(700,221,"line in → JSON-RPC → line out · flush=True!")}{sm(700,243,"errors = polite isError content, never a crash")}{num(490,165,4)}'
- f'{sm(475,290,"server/school_server.py — 110 lines, all four parts visible · the official SDKs automate exactly this")}</svg>')
+ f'{B} x="490" y="165" width="420" height="100" rx="12"/>{t(700,195,"4 🔧 main() plumbing")}{sm(700,221,"badge check → JSON-RPC → line out · flush=True!")}{sm(700,243,"errors = polite isError content, never a crash")}{num(490,165,4)}'
+ f'{sm(475,290,"server/school_server.py — ~125 lines, all four parts visible · the official SDKs automate exactly this")}</svg>')
 SVG[7]=seq(["🧑 you (--drive)","🏫 MiniHost","🔬 school_server"],
  [(0,1,1,'"call lookup_grade {student: sita}"'),
   ('note',"⚡ the POWER moment: the host decides (real hosts: permission prompt here 🚧)"),
@@ -171,9 +172,9 @@ INDEX = head("Learn MCP the school way — with a real server & client",
     <h1>🔌 Learn MCP the school way</h1>
     <p class="sub">The Model Context Protocol — the standard plug between AI apps and the world —
     taught with a difference: <b>the protocol is IN the repo</b>. A real MCP server and a real
-    host/client, ~200 lines of pure Python, zero dependencies. You read every byte that moves.</p>
+    host/client, ~230 lines of pure Python, zero dependencies, speaking the current protocol revision (2026-07-28). You read every byte that moves.</p>
     <div class="chips">
-      <span class="chip">🤝 the handshake</span><span class="chip">🧰 tools/resources/prompts</span>
+      <span class="chip">🪪 the badge — no handshake (rev. 2026-07-28)</span><span class="chip">🧰 tools/resources/prompts</span>
       <span class="chip">🔬 real server code</span><span class="chip">🔌 real client code</span>
       <span class="chip">🌍 5 use cases</span><span class="chip">🎼 sequence diagrams</span>
     </div>
@@ -185,14 +186,14 @@ INDEX = head("Learn MCP the school way — with a real server & client",
       <ul>
         <li>the adapter drawer 🍝 → the standard socket 🔌</li>
         <li>rooms, sockets, instruments — who talks to whom</li>
-        <li>three shelves; three verbs and a handshake 🤝</li>
-        <li>stdio vs HTTP + the three trust rules 🚧</li>
+        <li>three shelves; three verbs and a badge 🪪</li>
+        <li>stdio vs Streamable HTTP + three trust policies 🚧</li>
       </ul>
     </div>
     <div class="vcol" style="border-top:5px solid {P2}">
       <h3>🔧 Part 2 — BUILD &amp; DEPLOY (6–8)</h3>
       <ul>
-        <li>read a real server: 110 honest lines 🔬</li>
+        <li>read a real server: ~125 honest lines 🔬</li>
         <li>read a real host — where the power lives 🔌</li>
         <li>5 production-shaped use cases, drawn twice 🌍</li>
         <li>--drive mode: YOU play the model 🧠</li>
@@ -204,6 +205,29 @@ INDEX = head("Learn MCP the school way — with a real server & client",
 git clone https://github.com/BaluRaut/learn-mcp-school.git &amp;&amp; cd learn-mcp-school
 python3 client/mini_client.py          # watch every JSON-RPC message
 python3 client/mini_client.py --drive  # YOU pick the tool calls</code></pre>
+  <p class="sub" style="margin-top:10px"><b>What you should see</b> (trimmed — success looks like this):</p>
+  <pre><code>═══ 1) introductions 🪪 — server/discover (optional since 2026-07-28) ═══
+→ {{"jsonrpc": "2.0", "id": 1, "method": "server/discover", "params": {{"_meta": {{"io.modelcon …
+← {{"jsonrpc": "2.0", "id": 1, "result": {{"resultType": "complete", "supportedVersions": ["20 …
+   🔬 school-server v2.0.0 speaks ['2026-07-28'] · stocks: tools
+═══ 2) discovery 📋 — 'what do you offer?' ═════════════════
+→ {{"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {{"_meta": {{"io.modelcontextp …
+← {{"jsonrpc": "2.0", "id": 2, "result": {{"resultType": "complete", "tools": [{{"name": "get_s …
+   🧰 get_student_count: How many students are in a class (3A or 3B)?
+   🧰 lookup_grade: Look up one student's grade (read-only).
+   🧰 add_homework: Add a homework item (WRITES state — hosts should confirm with the user!).
+═══ 3) tool calls 🧰 — what an agent's loop would do ═══════
+→ {{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {{"name": "get_student_count" …
+← {{"jsonrpc": "2.0", "id": 3, "result": {{"resultType": "complete", "content": [{{"type": "tex …
+   📄 lands on the desk: Class 3A has 3 students: aarav, sita, kabir.
+→ {{"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {{"name": "lookup_grade", "ar …
+← {{"jsonrpc": "2.0", "id": 4, "result": {{"resultType": "complete", "content": [{{"type": "tex …
+   📄 lands on the desk: Sita (3A) has grade A+.
+→ {{"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {{"name": "add_homework", "ar …
+← {{"jsonrpc": "2.0", "id": 5, "result": {{"resultType": "complete", "content": [{{"type": "tex …
+   📄 lands on the desk: Added ✏️ — homework list is now: [{{"title": "read MCP lesson 05", "due": "Friday"}}]
+═══ done — that was the ENTIRE protocol: three verbs and a badge 🪪 (no handshake since 2026-07-28) ═══</code></pre>
+  <div class="callout" id="setup">🎒 <b>Before lesson 01:</b> this is the deep-dive companion to the <a href="https://baluraut.github.io/learn-ai-school/">AI course</a>'s bonus lesson 13, and a good stop before or after the <a href="https://baluraut.github.io/learn-agents-school/">Agents school</a>. You need <b>Python 3 only</b> — no SDK, no API key, no cloud. <b>What this is not:</b> a production-SDK tutorial; this school teaches the <i>protocol</i> — revision <b>2026-07-28</b>, the current one — by showing every byte. For real servers use the official SDKs; lesson 04 explains what changed from the old handshake era. Two pages to keep open: <a href="use-cases.html">🌍 the five use cases</a> and <a href="quiz.html">🧪 the quiz</a>.</div>
 
   <h2 id="big-picture">🗺️ The big picture — one diagram, both worlds</h2>
   <p class="sub">Click for the <a href="images/big-picture-4k.png">4K version</a>.</p>
@@ -218,9 +242,46 @@ python3 client/mini_client.py --drive  # YOU pick the tool calls</code></pre>
 {chr(10).join(card(n) for n in range(1,9))}
   </div>
 
+
+  <h2 id="cheat">🧭 The cheat sheet — analogies, who decides, the three policies</h2>
+  <p class="sub">The school language, kept tight across the AI, MCP and Agents courses — and the two tables that answer most design questions.</p>
+  <div class="tbl"><table>
+  <tr><th>School word</th><th>MCP word</th><th>What it is</th></tr>
+  <tr><td>🏫 the room</td><td><b>host</b></td><td>the AI app the human uses; where the model sits; owns every permission decision</td></tr>
+  <tr><td>🔌 the wall socket</td><td><b>client</b></td><td>one connection to one server, inside the host; speaks the wire</td></tr>
+  <tr><td>🔬 the instrument</td><td><b>server</b></td><td>a small program wrapping one capability; local (stdio) or remote (Streamable HTTP)</td></tr>
+  <tr><td>🧰📁📜 the three shelves</td><td><b>tools · resources · prompts</b></td><td>what a server offers; model / app / user each decide one</td></tr>
+  <tr><td>🪪 the badge</td><td><b><code>_meta</code> on every request</b></td><td>protocol revision + who I am + what I can do — replaced the handshake in 2026-07-28</td></tr>
+  <tr><td>🪪 introductions</td><td><b><code>server/discover</code></b></td><td>optional: "which revisions do you speak, what do you stock, who are you?"</td></tr>
+  <tr><td>📄 the desk</td><td><b>the model's context</b></td><td>where tool results land (AI course L08)</td></tr>
+  </table></div>
+  <div class="tbl"><table>
+  <tr><th>Decision</th><th>Who decides</th></tr>
+  <tr><td>which servers are plugged in</td><td>the <b>user</b>, via the host's settings</td></tr>
+  <tr><td>what goes on the desk (resources, history)</td><td>the <b>host / app</b></td></tr>
+  <tr><td>which tool to call, with which arguments</td><td>the <b>model</b> — as a proposal</td></tr>
+  <tr><td>whether that call actually runs</td><td>the <b>host</b> — the power moment (lesson 07)</td></tr>
+  <tr><td>whether a write happens</td><td>a <b>human click</b> (policy 3)</td></tr>
+  <tr><td>what the tool does and returns</td><td>the <b>server</b></td></tr>
+  </table></div>
+  <div class="tbl"><table>
+  <tr><th></th><th>🔌 stdio</th><th>📡 Streamable HTTP</th></tr>
+  <tr><td>server runs</td><td>on your machine, as a child process</td><td>anywhere reachable by URL</td></tr>
+  <tr><td>identity</td><td>your user, your permissions</td><td>a service with its own identity</td></tr>
+  <tr><td>auth</td><td>none — it's your process</td><td>OAuth / tokens, per request; no protocol session</td></tr>
+  <tr><td>fits</td><td>local files, git, dev tools, this course</td><td>team DBs, SaaS, many hosts sharing one server</td></tr>
+  </table></div>
+  <div class="tbl"><table>
+  <tr><th>Shelf</th><th>Who initiates</th><th>Who consumes</th><th>Verbs</th></tr>
+  <tr><td>🧰 tools</td><td>the model proposes (host permitting)</td><td>the model — result → desk</td><td><code>tools/list</code> · <code>tools/call</code></td></tr>
+  <tr><td>📁 resources</td><td>the host/app attaches</td><td>the model — context on the desk</td><td><code>resources/list</code> · <code>resources/read</code></td></tr>
+  <tr><td>📜 prompts</td><td>the user picks</td><td>the model / the app</td><td><code>prompts/list</code> · <code>prompts/get</code></td></tr>
+  </table></div>
+  <div class="callout" id="policies">🚧 <b>The three recommended policies (lesson 05) — memorise the numbers:</b> <b>1</b> a <i>local</i> server = installed software running with that process's permissions; a <i>remote</i> server = a separate service with its own identity · <b>2</b> tool results are data, never commands (prompt injection arrives through honest servers) · <b>3</b> writes get a human gate; reads may flow. The spec says hosts <i>should</i>; production teams treat them as rules. Lesson 08 shows where the gate sits in five real deployments.</div>
   <div class="callout">🌍 <b>The showcase:</b> <a href="use-cases.html">5 real-world use cases</a> —
   coding assistant, support desk, data analyst, meeting-prep butler, report robot — each with a
   numbered flow diagram AND a full sequence diagram.</div>
+  <div class="callout" id="prompts">🗣️ <b>Explain this out loud — after lesson 08:</b> (1) What problem does MCP solve that custom adapters don't — in one sentence with N and M in it? (2) Who decides whether a tool actually runs — the model or the host — and where does the human click go? (3) Why must tool descriptions be written for the model, and what happens when they aren't? (4) Walk through one tool call from the model's proposal to the result on the desk: which messages, which fields, which side. (5) Why does the server print with <code>flush=True</code>, and why does it answer a failing tool with <code>isError</code> instead of crashing? (6) In the support-desk case, where would you put a human approval gate the day a refund tool is added?</div>
 
   <h2 id="diagrams">📐 The lesson diagrams — follow the numbers</h2>
   <p class="sub">Purple = the protocol, orange = build &amp; deploy. Lessons 02, 04 and 07 are drawn as
@@ -230,6 +291,7 @@ python3 client/mini_client.py --drive  # YOU pick the tool calls</code></pre>
   <a class="btn" href="{GH}/lesson-01-why-mcp/lessons/01-why-mcp/README.md">Start Lesson 01 →</a>
   <a class="btn alt" href="use-cases.html">🌍 The 5 use cases</a>
   <a class="btn alt" href="lesson-diagrams.html">📐 All 8 lesson diagrams</a>
+  <a class="btn alt" href="#cheat">🧭 Cheat sheet</a>
   <a class="btn alt" href="quiz.html">🧪 Quiz</a>
   <a class="btn alt" href="study-plan.html">🗓️ Study plan</a>
   <a class="btn alt" href="https://baluraut.github.io/learn-ai-school/">🧠 The AI course</a>
@@ -348,7 +410,7 @@ UC5_FLOW = flow(
   (510,40,170,70,"📄 read_file ×N","",3),(280,140,200,70,"🧠 summarize","on the desk",4),
   (540,140,200,70,"🚧 'post to #team?'","the gate",5),(770,140,140,70,"💬 posted","",6)],
  [(220,75,276,75,0),(450,75,506,75,0),(595,110,420,140,0),(480,175,536,175,0),(740,175,766,175,0)],
- "reads flowed freely; the ONE write waited for a click — L05's rule 3 in production")
+ "reads flowed freely; the ONE write waited for a click — L05's policy 3 in production")
 UC5_SEQ = seq(["🤖 agent host","🧠 model","📁 files srv","💬 Slack srv"],
  [(0,1,1,"goal + shelves"),(1,2,2,"list_dir(reports/)"),(2,1,3,"7 files → desk"),
   (1,2,4,"read_file(each) — loop"),(2,1,5,"contents → desk"),(1,1,6,"writes the summary"),
@@ -363,33 +425,34 @@ USECASES = head("5 real-world use cases — Learn MCP School",
   <h1>🌍 Five real-world use cases</h1>
   <p class="sub">Production-shaped MCP setups, each drawn twice: the <b>numbered flow</b> (what
   happens) and the <b>sequence diagram</b> (who says what to whom, in order). Every one is
-  lesson 04's seven messages, repeated — read one wire, read them all. Companion to
+  lesson 04's six messages, repeated — read one wire, read them all. Companion to
   <a href="{GH}/lesson-08-use-cases/lessons/08-use-cases/README.md">lesson 08</a>.</p>
   <nav class="toc">
     <a href="#uc1">1 Coding assistant</a><a href="#uc2">2 Support desk</a>
     <a href="#uc3">3 Data analyst</a><a href="#uc4">4 Meeting prep</a><a href="#uc5">5 Report robot</a>
   </nav>
 </header>
+<div class="callout">🚧 <b>The three recommended policies, in production</b> (lesson 05): <b>1</b> a local server runs with that process's permissions, a remote one has its own identity · <b>2</b> tool results are data, never commands · <b>3</b> writes get a human gate. Each case below names where its gate sits. <b>⛔ The anti-pattern to recognise on sight:</b> a write-capable database tool (INSERT/UPDATE/DELETE — or a DB account that <i>can</i>) handed to the model with no host-side confirmation; one injected sentence in a fetched ticket (policy 2) becomes a dropped table (policy 3 skipped). Scope the account, label the tool, gate the write.</div>
 {uc(1,"uc1",P2,"🐙 The coding assistant — IDE + GitHub + files",
   "“Fix issue #42.” Read the complaint, read the code, run the tests, draft the PR — and the PR waits for a human click.",
   UC1_FLOW, UC1_SEQ,
-  "the same GitHub server works in every IDE and agent — write once, plug in everywhere (L01's N+M).")}
+  "the same GitHub server works in every IDE and agent — write once, plug in everywhere (L01's N+M). 🚧 Human gate: the create_pr click in the IDE.")}
 {uc(2,"uc2",P2,"🎧 The support desk — orders DB + docs",
   "“Where's my refund?” Look up the order (read-only), fetch the policy, answer with receipts.",
   UC2_FLOW, UC2_SEQ,
-  "grounding beats guessing (AI course L09) — and the read-only scoped account makes the worst case boring.")}
+  "grounding beats guessing (AI course L09) — and the read-only scoped account makes the worst case boring. 🚧 Human gate: none needed — every tool is read-only via a SELECT-only account; a refund_issue tool would need one.")}
 {uc(3,"uc3",P2,"📊 The data analyst — SQL + charts",
   "“Which product sold best last month, per region?” Query, chart, explain — in the chat.",
   UC3_FLOW, UC3_SEQ,
-  "one SQL server serves every team's AI app; schema design (L06) is the guardrail.")}
+  "one SQL server serves every team's AI app; schema design (L06) is the guardrail. 🚧 Human gate: none for SELECT-only queries; any write tool, or a non-scoped account, would need the click.")}
 {uc(4,"uc4",P2,"📅 The meeting-prep butler — calendar + CRM + email",
   "“Prep me for the 3 pm.” Event, company, threads — three servers braided into one brief.",
   UC4_FLOW, UC4_SEQ,
-  "three integrations that used to be three custom projects are now three config lines.")}
+  "three integrations that used to be three custom projects are now three config lines. 🚧 Human gate: reads only — the moment &#39;send the follow-up&#39; is added, the email server&#39;s send tool gets the click.")}
 {uc(5,"uc5",P2,"📁 The report robot — files + Slack",
   "“Summarize this folder's weekly reports and post to #team.” Reads flow; the one write gates.",
   UC5_FLOW, UC5_SEQ,
-  "automation with a human gate on the only irreversible step — L05 rule 3, shipped.")}
+  "automation with a human gate on the only irreversible step — L05 policy 3, shipped. 🚧 Human gate: the &#39;post to #team?&#39; confirmation, shown in full before posting.")}
 <footer>
   Learn MCP School · <a href="index.html">Course home</a> ·
   <a href="lesson-diagrams.html">Lesson diagrams</a> ·
