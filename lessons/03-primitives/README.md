@@ -59,9 +59,16 @@ flowchart TB
   "attachable context", not "action".
 - **Prompt** = named template with arguments, rendered into messages.
   Underrated for standardizing team workflows.
-- Servers declare which shelves they stock in the handshake's
-  **capabilities** (lesson 04) — our server says `{"tools": {}}` and
+- Servers declare which shelves they stock in their **capabilities**, answered by `server/discover` (lesson 04) — our server says `{"tools": {}}` and
   nothing else, which is honest and fine.
+
+**Who initiates, who consumes** — one table for the three shelves:
+
+| Shelf | Who initiates | Who consumes | Wire verbs |
+|---|---|---|---|
+| 🧰 tools | the **model** proposes (host permitting) | the model — result → desk | `tools/list`, `tools/call` |
+| 📁 resources | the **host/app** attaches | the model — context on the desk | `resources/list`, `resources/read` |
+| 📜 prompts | the **user** picks (menu, slash-command) | the model / the app | `prompts/list`, `prompts/get` |
 
 ## 🤔 Why
 
@@ -86,9 +93,25 @@ parent email about grades" template* (prompt — the user picks it),
 would you add as `resources/list` if you extended it? (Lesson 06 dares
 you to.)
 
+## ✅ Verify — what you should see
+
+Part 2 of the scripted run lists exactly three tools with their descriptions; part 1 (`server/discover`) reported `stocks: tools` — no resources or prompts, matching the server's `capabilities`.
+
+## 🏁 What you just proved
+
+You can classify any capability by who decides — model → tool, app → resource, user → prompt — and read a server's shelves from its capabilities before calling anything.
+
+## ⚠️ Common mistakes
+
+- making everything a tool — if the app should control what goes on the desk, it is a resource
+- writing tool descriptions for humans — the model reads them; vague descriptions mean tools that never get called
+- forgetting that `capabilities` is a promise: declaring `tools` and not answering `tools/list` breaks every host
+
+> 🏭 **Why this matters in production:** servers with sharp descriptions and rich `inputSchema` (enums, required fields) get called correctly; that is cheaper model-steering than any prompt engineering. Spend design time on the shelf, not the plumbing.
+
 ## ⏭️ Next
 
-Time to read the actual bytes: the handshake, discovery and calls —
+Time to read the actual bytes: the badge, discovery and calls —
 **the wire**, as a sequence diagram you'll recognize forever.
 
 ```bash

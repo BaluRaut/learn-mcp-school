@@ -1,13 +1,20 @@
 """A REAL MCP server in pure Python — the whole thing, readable. (Lessons 04 & 06)
 
-Speaks the actual protocol: JSON-RPC 2.0, one message per line, over stdio.
-Exposes three TOOLS wrapping a tiny school "database". Any MCP host that
-can launch a stdio server can plug this in — or use our client/mini_client.py.
+Speaks the CURRENT protocol revision (2026-07-28): JSON-RPC 2.0, one message per
+line, over stdio. There is no handshake any more — every request carries its own
+ID badge (`_meta`), and `server/discover` answers "who are you, what do you speak,
+what do you stock?". Exposes three TOOLS wrapping a tiny school "database".
+Any modern MCP host that can launch a stdio server can plug this in — or use
+our client/mini_client.py.
 
     python3 client/mini_client.py        # watch the full wire conversation
 """
 import json
 import sys
+
+PROTOCOL_VERSIONS = ["2026-07-28"]                  # the revisions this instrument speaks
+SERVER_INFO = {"name": "school-server", "version": "2.0.0"}
+META = "io.modelcontextprotocol/"                   # prefix of the standard _meta keys
 
 # ---- the "instrument" being wrapped: a tiny school database -----------------
 DB = {
@@ -57,7 +64,7 @@ def run_tool(name, args):
         for cls, students in DB.items():
             if student in students:
                 return f"{student.title()} ({cls}) has grade {students[student]}."
-        return f"No student named {args['student']!r} found."
+        raise LookupError(f"no student named {args['student']!r}")   # → isError, the model can retry
     if name == "add_homework":
         HOMEWORK.append({"title": args["title"], "due": args.get("due", "someday")})
         return f"Added ✏️ — homework list is now: {json.dumps(HOMEWORK)}"
@@ -65,11 +72,15 @@ def run_tool(name, args):
 
 # ---- the protocol plumbing: JSON-RPC over stdio, one message per line -------
 def reply(msg_id, result):
+    """Every result carries resultType + the server's own badge (_meta.serverInfo)."""
+    result = {"resultType": "complete", **result, "_meta": {META + "serverInfo": SERVER_INFO}}
     print(json.dumps({"jsonrpc": "2.0", "id": msg_id, "result": result}), flush=True)
 
-def reply_error(msg_id, code, message):
-    print(json.dumps({"jsonrpc": "2.0", "id": msg_id,
-                      "error": {"code": code, "message": message}}), flush=True)
+def reply_error(msg_id, code, message, data=None):
+    err = {"code": code, "message": message}
+    if data is not None:
+        err["data"] = data
+    print(json.dumps({"jsonrpc": "2.0", "id": msg_id, "error": err}), flush=True)
 
 def main():
     for line in sys.stdin:                      # the socket: read one message per line
@@ -77,27 +88,38 @@ def main():
         if not line:
             continue
         msg = json.loads(line)
-        method, msg_id = msg.get("method"), msg.get("id")
+        method, msg_id, params = msg.get("method"), msg.get("id"), msg.get("params", {})
+        if msg_id is None:                       # a notification: no id → never answered
+            continue
 
-        if method == "initialize":              # 🤝 the handshake (lesson 04, step 1)
+        # 🪪 the badge check (lesson 04, step 1): which revision is this request speaking?
+        version = params.get("_meta", {}).get(META + "protocolVersion")
+        if version not in PROTOCOL_VERSIONS:     # (a legacy `initialize` lands here too)
+            reply_error(msg_id, -32022, "Unsupported protocol version",
+                        {"supported": PROTOCOL_VERSIONS, "requested": version})
+            continue
+
+        if method == "server/discover":          # 🪪 optional introductions (lesson 04, step 1)
             reply(msg_id, {
-                "protocolVersion": "2025-06-18",
-                "capabilities": {"tools": {}},   # "I offer tools" (no resources/prompts here)
-                "serverInfo": {"name": "school-server", "version": "1.0.0"},
+                "supportedVersions": PROTOCOL_VERSIONS,
+                "capabilities": {"tools": {}},   # "I stock tools" (no resources/prompts here)
+                "instructions": "A tiny school database: class sizes, grades, homework.",
+                "ttlMs": 3600000, "cacheScope": "public",
             })
-        elif method == "notifications/initialized":
-            pass                                 # a notification: no id, no reply needed
         elif method == "tools/list":             # 📋 "what do you offer?" (step 2)
-            reply(msg_id, {"tools": TOOLS})
+            reply(msg_id, {"tools": TOOLS, "ttlMs": 60000, "cacheScope": "public"})
         elif method == "tools/call":             # 🧰 "do the thing" (step 3)
-            params = msg.get("params", {})
+            name = params.get("name")
+            if name not in [t["name"] for t in TOOLS]:      # protocol error: no such tool
+                reply_error(msg_id, -32602, f"Unknown tool: {name}")
+                continue
             try:
-                text = run_tool(params["name"], params.get("arguments", {}))
-                reply(msg_id, {"content": [{"type": "text", "text": text}]})
-            except Exception as e:
+                text = run_tool(name, params.get("arguments", {}))
+                reply(msg_id, {"content": [{"type": "text", "text": text}], "isError": False})
+            except Exception as e:                           # tool error: data for the model
                 reply(msg_id, {"content": [{"type": "text", "text": f"tool error: {e}"}],
                                "isError": True})
-        elif msg_id is not None:                 # unknown request → standard error
+        else:                                    # unknown request → standard error
             reply_error(msg_id, -32601, f"method not found: {method}")
 
 if __name__ == "__main__":
