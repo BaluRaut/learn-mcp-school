@@ -50,7 +50,7 @@
   <g transform="translate(920,170)"><circle r="13" fill="#7c3aed"/><text class="ntb" dy="5">3</text></g>
 
   <rect class="bxp" x="1380" y="170" width="470" height="130" rx="14"/>
-  <text class="t m" x="1615" y="203">🤝 the wire: seven messages</text>
+  <text class="t m" x="1615" y="203">🪪 the wire: six messages</text>
   <text class="s m" x="1615" y="231">server/discover 🪪 → tools/list →</text>
   <text class="s m" x="1615" y="255">tools/call → content lands on the desk ·</text>
   <text class="s m" x="1615" y="279">JSON-RPC, one message per line — that's ALL of it</text>
