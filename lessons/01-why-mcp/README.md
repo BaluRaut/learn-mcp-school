@@ -9,6 +9,8 @@
 The problem MCP exists to kill — and the one idea (N×M → N+M) that
 explains every design choice in the protocol.
 
+> 🎒 **Before you start:** this is the deep-dive companion to the [AI course's bonus lesson 13](https://github.com/BaluRaut/learn-ai-school/blob/lesson-13-mcp/lessons/13-mcp/README.md), and a good stop before or after the [Agents school](https://baluraut.github.io/learn-agents-school/). You need **Python 3 only**. **What this is not:** a production-SDK tutorial — this school teaches the *protocol* (revision **2026-07-28**, the current one) by showing every byte; for real servers use the official SDKs.
+
 ## 🧒 Explain like I'm 5
 
 The school science lab 🔬: every instrument (microscope, scale,
@@ -77,9 +79,48 @@ diagrams (L08).
 python3 client/mini_client.py
 ```
 
-Watch: a handshake 🤝, a discovery 📋, three tool calls 🧰 — every JSON
-message printed. That conversation is the entire subject of this course.
+Watch: introductions 🪪 (`server/discover`), a discovery 📋, three tool calls 🧰 — every JSON message printed, each request wearing its `_meta` badge (revision 2026-07-28: no handshake). That conversation is the entire subject of this course. You should see, trimmed:
+
+```text
+═══ 1) introductions 🪪 — server/discover (optional since 2026-07-28) ═══
+→ {"jsonrpc": "2.0", "id": 1, "method": "server/discover", "params": {"_meta": {"io.modelcontext …
+← {"jsonrpc": "2.0", "id": 1, "result": {"resultType": "complete", "supportedVersions": ["2026-0 …
+   🔬 school-server v2.0.0 speaks ['2026-07-28'] · stocks: tools
+═══ 2) discovery 📋 — 'what do you offer?' ═════════════════
+→ {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {"_meta": {"io.modelcontextproto …
+← {"jsonrpc": "2.0", "id": 2, "result": {"resultType": "complete", "tools": [{"name": "get_stude …
+   🧰 get_student_count: How many students are in a class (3A or 3B)?
+   🧰 lookup_grade: Look up one student's grade (read-only).
+   🧰 add_homework: Add a homework item (WRITES state — hosts should confirm with the user!).
+═══ 3) tool calls 🧰 — what an agent's loop would do ═══════
+→ {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "get_student_count", "a …
+← {"jsonrpc": "2.0", "id": 3, "result": {"resultType": "complete", "content": [{"type": "text",  …
+   📄 lands on the desk: Class 3A has 3 students: aarav, sita, kabir.
+→ {"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "lookup_grade", "argume …
+← {"jsonrpc": "2.0", "id": 4, "result": {"resultType": "complete", "content": [{"type": "text",  …
+   📄 lands on the desk: Sita (3A) has grade A+.
+→ {"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "add_homework", "argume …
+← {"jsonrpc": "2.0", "id": 5, "result": {"resultType": "complete", "content": [{"type": "text",  …
+   📄 lands on the desk: Added ✏️ — homework list is now: [{"title": "read MCP lesson 05", "due": "Friday"}]
+═══ done — that was the ENTIRE protocol: three verbs and a badge 🪪 (no handshake since 2026-07-28) ═══
+```
 By lesson 07 you'll have written both sides of it in your head.
+
+## ✅ Verify — what you should see
+
+`python3 client/mini_client.py` prints three sections — 🪪 introductions (`server/discover`), 📋 discovery (three tools listed), 🧰 three tool calls — each with a `→` request line and a `←` reply line, and ends with `done — that was the ENTIRE protocol`. Exit code 0, no stack trace. The trimmed expected output is under the command in the Try-it section.
+
+## 🏁 What you just proved
+
+You ran a real MCP server and a real MCP host with nothing installed beyond Python 3 — the socket is not magic, it is ~230 lines you will read.
+
+## ⚠️ Common mistakes
+
+- running the client from another directory — it launches `server/school_server.py` relative to the repo root; run it from the repo root
+- installing an SDK first — nothing here needs one; that is the point
+- expecting a handshake in the output because older tutorials show one — revision 2026-07-28 removed it (lesson 04)
+
+> 🏭 **Why this matters in production:** MCP's value is the N+M economics: one server per capability, reused by every host. Teams that adopt it well treat servers as shared infrastructure — versioned, reviewed, least-privilege — rather than per-app glue.
 
 ## ⏭️ Next
 
